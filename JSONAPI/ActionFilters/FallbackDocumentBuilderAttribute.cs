@@ -4,10 +4,11 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Filters;
+//using System.Web.Http.Filters;
 using JSONAPI.Documents;
 using JSONAPI.Documents.Builders;
 
+/*
 namespace JSONAPI.ActionFilters
 {
     /// <summary>
@@ -88,3 +89,4 @@ namespace JSONAPI.ActionFilters
         }
     }
 }
+*/

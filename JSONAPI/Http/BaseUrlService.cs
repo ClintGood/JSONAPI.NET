@@ -42,10 +42,10 @@ namespace JSONAPI.Http
         /// </summary>
         /// <param name="requestMessage"></param>
         /// <returns></returns>
-        public virtual string GetBaseUrl(HttpRequestMessage requestMessage)
+        public virtual string GetBaseUrl(Uri requestUri)
         {
             string pathAndQuery;
-            string absolutUri = requestMessage.RequestUri.AbsoluteUri;
+            string absolutUri = requestUri.AbsoluteUri;
             if (_publicOrigin != null)
             {
                 var publicUriBuilder = new UriBuilder(absolutUri)
@@ -59,7 +59,7 @@ namespace JSONAPI.Http
             }
             else
             {
-                pathAndQuery = requestMessage.RequestUri.PathAndQuery;
+                pathAndQuery = requestUri.PathAndQuery;
             }
             pathAndQuery = RemoveFromBegin(pathAndQuery, GetContextPath());
             pathAndQuery= pathAndQuery.TrimStart('/');

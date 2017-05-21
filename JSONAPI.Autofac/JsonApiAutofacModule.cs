@@ -1,7 +1,7 @@
 ﻿using System;
 using Autofac;
 using Autofac.Core;
-using JSONAPI.ActionFilters;
+//using JSONAPI.ActionFilters;
 using JSONAPI.Configuration;
 using JSONAPI.Core;
 using JSONAPI.Documents;
@@ -125,7 +125,8 @@ namespace JSONAPI.Autofac
                 return factory;
             });
 
-            builder.RegisterType<JsonApiHttpConfiguration>().SingleInstance();
+            // TODO
+            // builder.RegisterType<JsonApiHttpConfiguration>().SingleInstance();
             if (_jsonApiConfiguration.CustomBaseUrlService != null)
             {
                 builder.Register(c => _jsonApiConfiguration.CustomBaseUrlService).As<IBaseUrlService>().SingleInstance();
@@ -160,8 +161,10 @@ namespace JSONAPI.Autofac
             builder.RegisterType<RegistryDrivenSingleResourceDocumentBuilder>().As<ISingleResourceDocumentBuilder>().SingleInstance();
             builder.RegisterType<FallbackDocumentBuilder>().As<IFallbackDocumentBuilder>().SingleInstance();
             builder.RegisterType<ErrorDocumentBuilder>().As<IErrorDocumentBuilder>().SingleInstance();
-            builder.RegisterType<FallbackDocumentBuilderAttribute>().SingleInstance();
-            builder.RegisterType<JsonApiExceptionFilterAttribute>().SingleInstance();
+
+            //TODO
+            //builder.RegisterType<FallbackDocumentBuilderAttribute>().SingleInstance();
+            //builder.RegisterType<JsonApiExceptionFilterAttribute>().SingleInstance();
             builder.RegisterType<DefaultQueryableResourceCollectionDocumentBuilder>().As<IQueryableResourceCollectionDocumentBuilder>();
 
             // Misc

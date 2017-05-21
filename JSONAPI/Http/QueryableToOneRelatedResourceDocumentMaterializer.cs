@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using JSONAPI.Documents;
 using JSONAPI.Documents.Builders;
+using System.Collections.Generic;
 
 namespace JSONAPI.Http
 {
@@ -25,11 +26,11 @@ namespace JSONAPI.Http
             _baseUrlService = baseUrlService;
         }
 
-        public async Task<IJsonApiDocument> GetRelatedResourceDocument(string primaryResourceId, HttpRequestMessage request,
-            CancellationToken cancellationToken)
+        public async Task<IJsonApiDocument> GetRelatedResourceDocument(string primaryResourceId,
+            IEnumerable<KeyValuePair<string, string>> requestParams, System.Uri requestUri, CancellationToken cancellationToken)
         {
             var record = await GetRelatedRecord(primaryResourceId, cancellationToken);
-            var baseUrl = _baseUrlService.GetBaseUrl(request);
+            var baseUrl = _baseUrlService.GetBaseUrl(requestUri);
             return _singleResourceDocumentBuilder.BuildDocument(record, baseUrl, null, null); // TODO: allow implementors to specify includes and metadata
         }
 

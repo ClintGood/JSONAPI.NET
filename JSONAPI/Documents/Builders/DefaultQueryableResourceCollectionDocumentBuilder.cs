@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using JSONAPI.Http;
 using JSONAPI.QueryableTransformers;
+using System.Collections.Generic;
 
 namespace JSONAPI.Documents.Builders
 {
@@ -38,16 +39,16 @@ namespace JSONAPI.Documents.Builders
             _baseUrlService = baseUrlService;
         }
 
-        public async Task<IResourceCollectionDocument> BuildDocument<T>(IQueryable<T> query, HttpRequestMessage request, string[] sortExpressions, CancellationToken cancellationToken,
-            string[] includes = null)
+        public async Task<IResourceCollectionDocument> BuildDocument<T>(IQueryable<T> query, IEnumerable<KeyValuePair<string, string>> requestParams, 
+            System.Uri requestUri, string[] sortExpressions, CancellationToken cancellationToken, string[] includes = null)
         {
-            var filteredQuery = _filteringTransformer.Filter(query, request);
+            var filteredQuery = _filteringTransformer.Filter(query, requestParams);
             var sortedQuery = _sortingTransformer.Sort(filteredQuery, sortExpressions);
 
-            var paginationResults = _paginationTransformer.ApplyPagination(sortedQuery, request);
+            var paginationResults = _paginationTransformer.ApplyPagination(sortedQuery, requestParams);
             var paginatedQuery = paginationResults.PagedQuery;
 
-            var linkBaseUrl = _baseUrlService.GetBaseUrl(request);
+            var linkBaseUrl = _baseUrlService.GetBaseUrl(requestUri);
 
             var results = await _enumerationTransformer.Enumerate(paginatedQuery, cancellationToken);
             var metadata = await GetDocumentMetadata(query, filteredQuery, sortedQuery, paginationResults, cancellationToken);

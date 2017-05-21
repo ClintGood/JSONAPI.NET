@@ -17,6 +17,7 @@ namespace JSONAPI.Documents.Builders
         /// <summary>
         /// Builds an error document based on an HttpError
         /// </summary>
-        IErrorDocument BuildFromHttpError(HttpError httpError, HttpStatusCode statusCode);
+        // TODO
+        //IErrorDocument BuildFromHttpError(HttpError httpError, HttpStatusCode statusCode);
     }
 }

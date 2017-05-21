@@ -8,6 +8,7 @@ using JSONAPI.Core;
 using JSONAPI.Documents;
 using JSONAPI.Documents.Builders;
 using JSONAPI.QueryableTransformers;
+using System.Collections.Generic;
 
 namespace JSONAPI.Http
 {
@@ -64,20 +65,21 @@ namespace JSONAPI.Http
             get { return _resourceTypeRegistry.GetRegistrationForType(typeof (TDto)).ResourceTypeName; }
         }
 
-        public virtual async Task<IResourceCollectionDocument> GetRecords(HttpRequestMessage request, CancellationToken cancellationToken)
+        public virtual async Task<IResourceCollectionDocument> GetRecords(IEnumerable<KeyValuePair<string, string>> requestParams, 
+            System.Uri requestUri, CancellationToken cancellationToken)
         {
             var entityQuery = GetQuery();
             var includePaths = GetIncludePathsForQuery() ?? new Expression<Func<TDto, object>>[] { };
             var jsonApiPaths = includePaths.Select(ConvertToJsonKeyPath).ToArray();
             var mappedQuery = GetMappedQuery(entityQuery, includePaths);
-            var sortationPaths = _sortExpressionExtractor.ExtractSortExpressions(request);
+            var sortationPaths = _sortExpressionExtractor.ExtractSortExpressions(requestParams);
             if (sortationPaths == null || !sortationPaths.Any())
                 sortationPaths = GetDefaultSortExpressions();
 
-            return await _queryableResourceCollectionDocumentBuilder.BuildDocument(mappedQuery, request, sortationPaths, cancellationToken, jsonApiPaths);
+            return await _queryableResourceCollectionDocumentBuilder.BuildDocument(mappedQuery, requestParams, requestUri, sortationPaths, cancellationToken, jsonApiPaths);
         }
 
-        public virtual async Task<ISingleResourceDocument> GetRecordById(string id, HttpRequestMessage request, CancellationToken cancellationToken)
+        public virtual async Task<ISingleResourceDocument> GetRecordById(string id, System.Uri requestUri, CancellationToken cancellationToken)
         {
             var entityQuery = GetByIdQuery(id);
             var includePaths = GetIncludePathsForSingleResource() ?? new Expression<Func<TDto, object>>[] { };
@@ -90,7 +92,7 @@ namespace JSONAPI.Http
 
             await OnResourceFetched(primaryResource, cancellationToken);
 
-            var baseUrl = _baseUrlService.GetBaseUrl(request);
+            var baseUrl = _baseUrlService.GetBaseUrl(requestUri);
             return _singleResourceDocumentBuilder.BuildDocument(primaryResource, baseUrl, jsonApiPaths, null);
         }
 

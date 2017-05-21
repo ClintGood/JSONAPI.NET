@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using JSONAPI.Documents;
+using System.Collections.Generic;
 
 namespace JSONAPI.Http
 {
@@ -13,6 +14,7 @@ namespace JSONAPI.Http
         /// <summary>
         /// Builds a document containing the results of the relationship.
         /// </summary>
-        Task<IJsonApiDocument> GetRelatedResourceDocument(string primaryResourceId, HttpRequestMessage request, CancellationToken cancellationToken);
+        Task<IJsonApiDocument> GetRelatedResourceDocument(string primaryResourceId, IEnumerable<KeyValuePair<string, string>> requestParams, 
+            System.Uri requestUri, CancellationToken cancellationToken);
     }
 }

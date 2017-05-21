@@ -74,6 +74,7 @@ namespace JSONAPI.Json
             {
                 await _errorDocumentFormatter.Serialize(errorDocument, writer);
             }
+            /*
             else
             {
                 var error = value as HttpError;
@@ -87,6 +88,7 @@ namespace JSONAPI.Json
                     WriteErrorForUnsupportedType(value, writer);
                 }
             }
+            */
 
             writer.Flush();
         }

@@ -39,7 +39,7 @@ namespace JSONAPI.Tests.Documents
             var conventions = new DefaultLinkConventions();
             var relationshipLink = conventions.GetRelationshipLink(relationshipOwner, mockRegistry.Object, relationshipProperty, "https://www.example.com");
 
-            // Assert
+            // Asserte
             relationshipLink.Href.Should().Be("https://www.example.com/countries/45/relationships/cities");
         }
 
@@ -180,7 +180,7 @@ namespace JSONAPI.Tests.Documents
 
             // Act
             var conventions = new DefaultLinkConventions();
-            var relationshipLink = conventions.GetRelatedResourceLink(relationshipOwner, mockRegistry.Object, relationshipProperty, "https://www.example.com");
+            var relationshipLink = conventions.GetRelatedResourceLink(relationshipOwner, mockRegistry.Object, relationshipProperty, "https://www.example.com/");
 
             // Assert
             relationshipLink.Href.Should().Be("https://www.example.com/bar/45/qux");

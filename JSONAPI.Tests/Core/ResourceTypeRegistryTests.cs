@@ -163,5 +163,23 @@ namespace JSONAPI.Tests.Core
             // Assert
             isRegistered.Should().BeFalse();
         }
+
+        [TestMethod]
+        public void TypeIsRegistered_returns_false_if_unrelated_type_is_registered()
+        {
+            // Arrange
+            var mockPostRegistration = new Mock<IResourceTypeRegistration>(MockBehavior.Strict);
+            mockPostRegistration.Setup(m => m.Type).Returns(typeof(Post));
+            mockPostRegistration.Setup(m => m.ResourceTypeName).Returns("posts");
+
+            var registry = new ResourceTypeRegistry();
+            registry.AddRegistration(mockPostRegistration.Object);
+
+            // Act
+            var isRegistered = registry.TypeIsRegistered(typeof(Comment));
+
+            // Assert
+            isRegistered.Should().BeFalse();
+        }
     }
 }

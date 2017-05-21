@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using FluentAssertions;
-using JSONAPI.ActionFilters;
+//using JSONAPI.ActionFilters;
 using JSONAPI.Core;
 using JSONAPI.Documents.Builders;
 using JSONAPI.QueryableTransformers;
@@ -56,7 +56,7 @@ namespace JSONAPI.Tests.ActionFilters
         private Dummy[] GetArray(string uri, int maxPageSize = 50)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
-            return GetTransformer(maxPageSize).ApplyPagination(_fixturesQuery, request).PagedQuery.ToArray();
+            return GetTransformer(maxPageSize).ApplyPagination(_fixturesQuery, request.GetQueryNameValuePairs()).PagedQuery.ToArray();
         }
 
         [TestMethod]

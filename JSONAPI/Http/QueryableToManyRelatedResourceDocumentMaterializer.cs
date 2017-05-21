@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using JSONAPI.Documents;
 using JSONAPI.Documents.Builders;
+using System.Collections.Generic;
 
 namespace JSONAPI.Http
 {
@@ -34,17 +35,16 @@ namespace JSONAPI.Http
             _includeExpressionExtractor = includeExpressionExtractor;
         }
 
-        public async Task<IJsonApiDocument> GetRelatedResourceDocument(string primaryResourceId, HttpRequestMessage request,
-            CancellationToken cancellationToken)
+        public async Task<IJsonApiDocument> GetRelatedResourceDocument(string primaryResourceId,
+            IEnumerable<KeyValuePair<string, string>> requestParams, System.Uri requestUri, CancellationToken cancellationToken)
         {
-            Includes = _includeExpressionExtractor.ExtractIncludeExpressions(request);
+            Includes = _includeExpressionExtractor.ExtractIncludeExpressions(requestParams);
             var query = await GetRelatedQuery(primaryResourceId, cancellationToken);
-            var sortExpressions = _sortExpressionExtractor.ExtractSortExpressions(request);
+            var sortExpressions = _sortExpressionExtractor.ExtractSortExpressions(requestParams);
             if (sortExpressions == null || sortExpressions.Length < 1)
                 sortExpressions = GetDefaultSortExpressions();
-
-
-            return await _queryableResourceCollectionDocumentBuilder.BuildDocument(query, request, sortExpressions, cancellationToken, Includes); // TODO: allow implementors to specify metadata
+            
+            return await _queryableResourceCollectionDocumentBuilder.BuildDocument(query, requestParams, requestUri, sortExpressions, cancellationToken, Includes); // TODO: allow implementors to specify metadata
         }
 
         /// <summary>

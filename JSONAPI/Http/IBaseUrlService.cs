@@ -10,7 +10,7 @@ namespace JSONAPI.Http
         /// <summary>
         /// Gets the base URL for a request
         /// </summary>
-        string GetBaseUrl(HttpRequestMessage requestMessage);
+        string GetBaseUrl(System.Uri requestUri);
 
         /// <summary>
         /// Gets the context path JSONAPI is served under without slashes at the beginning and end.

@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Reflection;
 using JSONAPI.Core;
 using JSONAPI.Documents.Builders;
+using System.Collections.Generic;
 
 namespace JSONAPI.QueryableTransformers
 {
@@ -25,10 +26,10 @@ namespace JSONAPI.QueryableTransformers
             _resourceTypeRegistry = resourceTypeRegistry;
         }
 
-        public IQueryable<T> Filter<T>(IQueryable<T> query, HttpRequestMessage request)
+        public IQueryable<T> Filter<T>(IQueryable<T> query, IEnumerable<KeyValuePair<string, string>> requestParams)
         {
             var parameter = Expression.Parameter(typeof(T));
-            var bodyExpr = GetPredicateBody(request, parameter);
+            var bodyExpr = GetPredicateBody(requestParams, parameter);
             var lambdaExpr = Expression.Lambda<Func<T, bool>>(bodyExpr, parameter);
             return query.Where(lambdaExpr);
         }
@@ -54,13 +55,12 @@ namespace JSONAPI.QueryableTransformers
                 .SingleOrDefault()
         );
 
-        private Expression GetPredicateBody(HttpRequestMessage request, ParameterExpression param)
+        private Expression GetPredicateBody(IEnumerable<KeyValuePair<string, string>> requestParams, ParameterExpression param)
         {
             Expression workingExpr = null;
 
             var type = param.Type;
-            var queryPairs = request.GetQueryNameValuePairs();
-            foreach (var queryPair in queryPairs)
+            foreach (var queryPair in requestParams)
             {
                 if (String.IsNullOrWhiteSpace(queryPair.Key))
                     continue;

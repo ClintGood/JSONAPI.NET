@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Web.Http;
 using FluentAssertions;
-using JSONAPI.ActionFilters;
+//using JSONAPI.ActionFilters;
 using JSONAPI.Core;
 using JSONAPI.Documents.Builders;
 using JSONAPI.QueryableTransformers;

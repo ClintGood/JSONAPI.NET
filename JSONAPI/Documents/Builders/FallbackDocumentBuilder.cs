@@ -51,13 +51,13 @@ namespace JSONAPI.Documents.Builders
                         .GetMethod("BuildDocument", BindingFlags.Instance | BindingFlags.Public));
         }
 
-        public async Task<IJsonApiDocument> BuildDocument(object obj, HttpRequestMessage requestMessage,
-            CancellationToken cancellationToken)
+        public async Task<IJsonApiDocument> BuildDocument(object obj, IEnumerable<KeyValuePair<string, string>> requestParams,
+            System.Uri requestUri, CancellationToken cancellationToken)
         {
             var type = obj.GetType();
 
             // TODO: test includes
-            var includeExpressions = _includeExpressionExtractor.ExtractIncludeExpressions(requestMessage);
+            var includeExpressions = _includeExpressionExtractor.ExtractIncludeExpressions(requestParams);
 
             var queryableInterfaces = type.GetInterfaces();
             var queryableInterface =
@@ -69,10 +69,10 @@ namespace JSONAPI.Documents.Builders
                 var buildDocumentMethod =
                     _openBuildDocumentFromQueryableMethod.Value.MakeGenericMethod(queryableElementType);
 
-                var sortExpressions = _sortExpressionExtractor.ExtractSortExpressions(requestMessage);
+                var sortExpressions = _sortExpressionExtractor.ExtractSortExpressions(requestParams);
 
                 dynamic materializedQueryTask = buildDocumentMethod.Invoke(_queryableResourceCollectionDocumentBuilder,
-                    new[] { obj, requestMessage, sortExpressions, cancellationToken, includeExpressions });
+                    new[] { obj, requestParams, requestUri, sortExpressions, cancellationToken, includeExpressions });
 
                 return await materializedQueryTask;
             }
@@ -84,7 +84,7 @@ namespace JSONAPI.Documents.Builders
                 isCollection = true;
             }
 
-            var linkBaseUrl = _baseUrlService.GetBaseUrl(requestMessage);
+            var linkBaseUrl = _baseUrlService.GetBaseUrl(requestUri);
 
             if (isCollection)
             {

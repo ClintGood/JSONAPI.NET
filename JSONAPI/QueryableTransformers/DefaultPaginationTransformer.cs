@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Http;
-using JSONAPI.ActionFilters;
+//using JSONAPI.ActionFilters;
 using JSONAPI.Documents.Builders;
+using System.Collections.Generic;
 
 namespace JSONAPI.QueryableTransformers
 {
@@ -28,13 +29,13 @@ namespace JSONAPI.QueryableTransformers
             _maxPageSize = maxPageSize;
         }
 
-        public IPaginationTransformResult<T> ApplyPagination<T>(IQueryable<T> query, HttpRequestMessage request)
+        public IPaginationTransformResult<T> ApplyPagination<T>(IQueryable<T> query, IEnumerable<KeyValuePair<string, string>> requestParams)
         {
             var hasPageNumberParam = false;
             var hasPageSizeParam = false;
             var pageNumber = 0;
             var pageSize = _maxPageSize ?? DefaultPageSize;
-            foreach (var kvp in request.GetQueryNameValuePairs())
+            foreach (var kvp in requestParams)
             {
                 if (kvp.Key == PageNumberQueryParam)
                 {

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 
 namespace JSONAPI.Http
@@ -10,10 +11,9 @@ namespace JSONAPI.Http
     {
         private const string IncludeQueryParamKey = "include";
 
-        public string[] ExtractIncludeExpressions(HttpRequestMessage requestMessage)
+        public string[] ExtractIncludeExpressions(IEnumerable<KeyValuePair<string, string>> requestParams)
         {
-            var queryParams = requestMessage.GetQueryNameValuePairs();
-            var includeParam = queryParams.FirstOrDefault(kvp => kvp.Key == IncludeQueryParamKey);
+            var includeParam = requestParams.FirstOrDefault(kvp => kvp.Key == IncludeQueryParamKey);
             if (includeParam.Key != IncludeQueryParamKey) return new string[] { };
             return includeParam.Value.Split(',');
         }

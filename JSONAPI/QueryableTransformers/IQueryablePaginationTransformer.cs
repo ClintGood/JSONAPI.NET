@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 
 namespace JSONAPI.QueryableTransformers
@@ -12,10 +13,10 @@ namespace JSONAPI.QueryableTransformers
         /// Pages the query according to information from the request.
         /// </summary>
         /// <param name="query">The query to page</param>
-        /// <param name="request">The request message</param>
+        /// <param name="requestParams">The request message</param>
         /// <typeparam name="T">The queryable element type</typeparam>
         /// <returns>The result of pagination</returns>
-        IPaginationTransformResult<T> ApplyPagination<T>(IQueryable<T> query, HttpRequestMessage request);
+        IPaginationTransformResult<T> ApplyPagination<T>(IQueryable<T> query, IEnumerable<KeyValuePair<string, string>> requestParams);
     }
 
     /// <summary>

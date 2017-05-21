@@ -1,4 +1,4 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
 
 namespace JSONAPI.Http
 {
@@ -10,8 +10,8 @@ namespace JSONAPI.Http
         /// <summary>
         /// Extracts sort expressions from the request
         /// </summary>
-        /// <param name="requestMessage"></param>
+        /// <param name="requestParams"></param>
         /// <returns></returns>
-        string[] ExtractSortExpressions(HttpRequestMessage requestMessage);
+        string[] ExtractSortExpressions(IEnumerable<KeyValuePair<string, string>> requestParams);
     }
 }

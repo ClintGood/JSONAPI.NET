@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 
 namespace JSONAPI.Http
 {
@@ -10,8 +11,8 @@ namespace JSONAPI.Http
         /// <summary>
         /// Extracts include expressions from the request
         /// </summary>
-        /// <param name="requestMessage"></param>
+        /// <param name="requestParams"></param>
         /// <returns></returns>
-        string[] ExtractIncludeExpressions(HttpRequestMessage requestMessage);
+        string[] ExtractIncludeExpressions(IEnumerable<KeyValuePair<string, string>> requestParams);
     }
 }

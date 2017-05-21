@@ -1,10 +1,11 @@
 ﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http.Filters;
+//using System.Web.Http.Filters;
 using JSONAPI.Documents.Builders;
 using JSONAPI.Json;
 
+/*
 namespace JSONAPI.ActionFilters
 {
     /// <summary>
@@ -41,3 +42,4 @@ namespace JSONAPI.ActionFilters
         }
     }
 }
+*/

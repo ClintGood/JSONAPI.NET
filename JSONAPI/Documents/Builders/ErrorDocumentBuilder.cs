@@ -32,6 +32,7 @@ namespace JSONAPI.Documents.Builders
             return new ErrorDocument(new [] { error }, topLevelMetadata);
         }
 
+        /*
         public IErrorDocument BuildFromHttpError(HttpError httpError, HttpStatusCode statusCode)
         {
             var error = new Error
@@ -47,6 +48,7 @@ namespace JSONAPI.Documents.Builders
             var topLevelMetadata = GetTopLevelMetadata();
             return new ErrorDocument(new[] { (IError)error }, topLevelMetadata);
         }
+        */
 
         /// <summary>
         /// Builds an error object for a given exception.
@@ -107,6 +109,8 @@ namespace JSONAPI.Documents.Builders
         /// </summary>
         /// <param name="httpError"></param>
         /// <returns></returns>
+        /// 
+        /*
         protected virtual IMetadata GetHttpErrorMetadata(HttpError httpError)
         {
             var metaObject = new JObject();
@@ -131,6 +135,7 @@ namespace JSONAPI.Documents.Builders
 
             return new BasicMetadata(metaObject);
         }
+        */
 
         private IError GetErrorForJsonApiException(Exception ex)
         {

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 
 namespace JSONAPI.Http
@@ -10,10 +11,9 @@ namespace JSONAPI.Http
     {
         private const string SortQueryParamKey = "sort";
 
-        public string[] ExtractSortExpressions(HttpRequestMessage requestMessage)
+        public string[] ExtractSortExpressions(IEnumerable<KeyValuePair<string, string>> requestParams)
         {
-            var queryParams = requestMessage.GetQueryNameValuePairs();
-            var sortParam = queryParams.FirstOrDefault(kvp => kvp.Key == SortQueryParamKey);
+            var sortParam = requestParams.FirstOrDefault(kvp => kvp.Key == SortQueryParamKey);
             if (sortParam.Key != SortQueryParamKey) return new string[] {};
             return sortParam.Value.Split(',');
         }

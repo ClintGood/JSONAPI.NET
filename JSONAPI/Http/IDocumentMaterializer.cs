@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using JSONAPI.Documents;
+using System.Collections.Generic;
 
 namespace JSONAPI.Http
 {
@@ -14,12 +15,13 @@ namespace JSONAPI.Http
         /// Returns a document containing records that are filtered, sorted,
         /// and paginated according to query parameters present in the provided request.
         /// </summary>
-        Task<IResourceCollectionDocument> GetRecords(HttpRequestMessage request, CancellationToken cancellationToken);
+        Task<IResourceCollectionDocument> GetRecords(IEnumerable<KeyValuePair<string, string>> requestParams,
+            System.Uri requestUri, CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a document with the resource identified by the given ID.
         /// </summary>
-        Task<ISingleResourceDocument> GetRecordById(string id, HttpRequestMessage request,
+        Task<ISingleResourceDocument> GetRecordById(string id, System.Uri requestUri,
             CancellationToken cancellationToken);
 
         /// <summary>
